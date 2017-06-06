@@ -17,13 +17,48 @@ void executeFunctionWithTimeLog(function<void()> funcToExecute);
 
 int main(int argc, char* argv[])
 {
-	int N = 5;//atoi(argv[1]);
-	int k = 2;
+	int N = 10;//atoi(argv[1]);
+	int k = 5;
 
 	function<void()> func = bind(generateTuples, N, k);
 	executeFunctionWithTimeLog(func);
 
 	std::getchar();
+}
+
+bool nextTuple(vector<int>& P, int N, int k)
+{
+	int j;
+	do
+	{
+		j = N - 2;
+		while (j != -1 && P[j] >= P[j + 1])
+		{
+			j--;
+		}
+
+		if (j == -1)
+		{
+			return false;
+		}
+
+		int tempIndex = N - 1;
+		while (P[j] >= P[tempIndex])
+		{
+			tempIndex--;
+		}
+		swap(P[j], P[tempIndex]);
+
+		int leftIndex = j + 1;
+		int rightIndex = N - 1;
+		while (leftIndex < rightIndex)
+		{
+			swap(P[leftIndex], P[rightIndex]);
+			leftIndex++;
+			rightIndex--;
+		}
+	} while (j > k - 1);
+	return true;
 }
 
 void generateTuples(const int N, const int k)
@@ -35,43 +70,11 @@ void generateTuples(const int N, const int k)
 		P[i] = i + 1;
 	}
 
-	bool isEnded = false;
-	while (!isEnded)
+	printArr(P, k);
+
+	while (nextTuple(P, N, k))
 	{
 		printArr(P, k);
-
-		int j;
-		do
-		{
-			j = N - 1;
-			while (j != -1 && P[j] >= P[j + 1])
-			{
-				j--;
-			}
-
-			if (j == -1)
-			{
-				isEnded = true;
-				break;
-			}
-
-			int tempIndex = N - 1;
-			while (P[j] >= P[tempIndex])
-			{
-				tempIndex--;
-			}
-			swap(P[j], P[tempIndex]);
-
-			int leftIndex = j + 1;
-			int rightIndex = N - 1;
-			while (leftIndex < rightIndex)
-			{
-				swap(P[leftIndex], P[rightIndex]);
-				leftIndex++;
-				rightIndex--;
-			}
-		} while (j > k - 1 && !isEnded);
-		
 	}
 }
 
