@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <functional>
+#include <vector>
 
 /**
 * time without print
@@ -10,7 +11,7 @@
 
 using namespace std;
 
-void printArr(const int arr[], int N);
+void printArr(const vector<int> arr, int N);
 void generateTuples(const int N, const int k);
 void executeFunctionWithTimeLog(function<void()> funcToExecute);
 
@@ -19,14 +20,15 @@ int main(int argc, char* argv[])
 	int N = 5;//atoi(argv[1]);
 	int k = 2;
 
-	executeFunctionWithTimeLog(bind(generateTuples, N, k));
+	function<void()> func = bind(generateTuples, N, k);
+	executeFunctionWithTimeLog(func);
 
 	std::getchar();
 }
 
 void generateTuples(const int N, const int k)
 {
-	int* P = new int[N];
+	vector<int> P(N);
 
 	for (int i = 0; i < N; i++)
 	{
@@ -86,7 +88,7 @@ void executeFunctionWithTimeLog(function<void()> funcToExecute)
 	std::cout << "Time: " << duration << '\n';
 }
 
-void printArr(const int arr[], int N)
+void printArr(const vector<int> arr, int N)
 {
 	for (int i = 0; i < N; i++)
 	{
